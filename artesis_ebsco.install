@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * @file
+ * Install/uninstall routine.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function artesis_ebsco_install() {
+  variable_set('ebsco_url', 'https://search.ebscohost.com/login.aspx?authtype=ip,uid&direct=true&profile=ehost');
+
+  // Add "EBSCO" to active modules.
+  $active_modules = variable_get('search_active_modules', []);
+  $active_modules['artesis_ebsco'] = 'artesis_ebsco';
+  variable_set('search_active_modules', $active_modules);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function artesis_ebsco_uninstall() {
+  variable_del('ebsco_url');
+
+  // Remove "EBSCO" from active modules.
+  $active_modules = variable_get('search_active_modules', []);
+  unset($active_modules['artesis_ebsco']);
+  variable_set('search_active_modules', $active_modules);
+}

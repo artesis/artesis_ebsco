@@ -1,0 +1,60 @@
+<?php
+
+/**
+ * @file
+ * Artesis EBSCO search module.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function artesis_ebsco_menu() {
+  $items['admin/config/search/ebsco'] = [
+    'title' => 'Artesis EBSCO settings',
+    'description' => 'EBSCO Search service settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['artesis_ebsco_admin_form'],
+    'access arguments' => ['access administration pages'],
+    'file' => 'artesis_ebsco.admin.inc',
+  ];
+
+  return $items;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function artesis_ebsco_form_search_block_form_alter(&$form, &$form_state) {
+  $form['#process'][] = '_artesis_ebsco_search_form_custom_process';
+}
+
+/**
+ * Custom processing function of search form block.
+ */
+function _artesis_ebsco_search_form_custom_process($form, $form_state) {
+  $form['#attached']['js'][] = drupal_get_path('module', 'artesis_ebsco') . '/js/artesis_ebsco.js';
+
+  return $form;
+}
+
+/**
+ * Implements hook_search_info().
+ */
+function artesis_ebsco_search_info() {
+  return [
+    'title' => t('EBSCO'),
+    'path' => 'ebsco',
+  ];
+}
+
+/**
+ * Implements hook_search_execute().
+ */
+function artesis_ebsco_search_execute($keys = NULL, $conditions = NULL) {
+  $proxy = variable_get('ting_proxy', []);
+  $ebsco_service_url = variable_get('ebsco_url', 'https://search.ebscohost.com/login.aspx?authtype=ip,uid&direct=true&profile=ehost');
+  $ebsco_suffix = $ebsco_service_url . "&bquery=" . $keys;
+  $url = $proxy['prefix'] . $ebsco_suffix;
+
+  drupal_goto($url);
+}
