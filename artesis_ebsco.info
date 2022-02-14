@@ -1,7 +1,7 @@
 name = "Artesis EBSCO"
 description = "Redirect artesis search to ESBCOhost search"
 core = 7.x
-version = 7.x-1.0.0
+version = 7.x-5.0.0
 package = Artesis
 dependencies[] = ting_proxy
 configure = admin/config/search/ebsco
