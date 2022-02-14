@@ -5,6 +5,8 @@
  * Artesis EBSCO search module.
  */
 
+define('ARTESIS_EBSCO_SERVICE_URL', 'https://search.ebscohost.com/login.aspx?authtype=ip,uid&direct=true&profile=eds');
+
 /**
  * Implements hook_menu().
  */
@@ -52,7 +54,7 @@ function artesis_ebsco_search_info() {
  */
 function artesis_ebsco_search_execute($keys = NULL, $conditions = NULL) {
   $proxy = variable_get('ting_proxy', []);
-  $ebsco_service_url = variable_get('ebsco_url', 'https://search.ebscohost.com/login.aspx?authtype=ip,uid&direct=true&profile=ehost');
+  $ebsco_service_url = variable_get('ebsco_url', ARTESIS_EBSCO_SERVICE_URL);
   $ebsco_suffix = $ebsco_service_url . "&bquery=" . $keys;
   $url = $proxy['prefix'] . $ebsco_suffix;
 
